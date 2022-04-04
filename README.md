@@ -23,7 +23,28 @@ Then, run the project with
 node app.js
 ```
 
-### Running Tests
+## Hitting Endpoints
+- Create a user record
+```bash
+curl -X PUT localhost:3000/user -H "Content-Type: application:json" --data '{"name": "Joe Doe", "email": "test@test.com", "date_of_birth": "2000-01-01"}'
+```
+
+- Retrieve a user record
+```bash
+curl -X GET localhost:3000/user/{id}
+```
+
+- Update a user record
+```bash
+curl -X POST localhost:3000/user/{id} -H "Content-Type: application:json" --data '{"email": "test_two@test.com"}'
+```
+
+- Delete a user record
+```bash
+curl -X DELETE localhost:3000/user/{id}
+```
+
+## Running Tests
 First, build the test database using
 ```bash
 dbmate -e TEST_DATABASE_URL up
