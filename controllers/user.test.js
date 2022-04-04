@@ -9,7 +9,7 @@ test.beforeEach(async (t) => {
 });
 
 test("createUserHappyPath", async (t) => {
-  req = mocks.createRequest({
+  var req = mocks.createRequest({
     method: "PUT",
     url: "/user",
     headers: {
@@ -21,16 +21,16 @@ test("createUserHappyPath", async (t) => {
       date_of_birth: "2000-01-01",
     },
   });
-  res = mocks.createResponse();
+  var res = mocks.createResponse();
 
   await putUserProvider(req, res);
 
-  responseData = res._getJSONData();
+  var responseData = res._getJSONData();
   t.is(responseData.name, "Joe Doe");
   t.is(responseData.email, "test@test.com");
   t.is(responseData.date_of_birth, "2000-01-01");
 
-  userDBResult = await dbPool.query(
+  var userDBResult = await dbPool.query(
     `SELECT
       name,
       email,
@@ -45,4 +45,61 @@ test("createUserHappyPath", async (t) => {
   t.is(userDBResult.rows[0].name, "Joe Doe");
   t.is(userDBResult.rows[0].email, "test@test.com");
   t.is(userDBResult.rows[0].date_of_birth, "2000-01-01");
+});
+
+test("createUserMissingName", async (t) => {
+  var req = mocks.createRequest({
+    method: "PUT",
+    url: "/user",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: {
+      email: "test@test.com",
+      date_of_birth: "2000-01-01",
+    },
+  });
+  var res = mocks.createResponse();
+
+  await putUserProvider(req, res);
+
+  t.is(res.statusCode, 400);
+});
+
+test("createUserMissingEmail", async (t) => {
+  var req = mocks.createRequest({
+    method: "PUT",
+    url: "/user",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: {
+      name: "Joe Doe",
+      date_of_birth: "2000-01-01",
+    },
+  });
+  var res = mocks.createResponse();
+
+  await putUserProvider(req, res);
+
+  t.is(res.statusCode, 400);
+});
+
+test("createUserMissingDateOfBirth", async (t) => {
+  var req = mocks.createRequest({
+    method: "PUT",
+    url: "/user",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: {
+      name: "Joe Doe",
+      email: "test@test.com"
+    },
+  });
+  var res = mocks.createResponse();
+
+  await putUserProvider(req, res);
+
+  t.is(res.statusCode, 400);
 });
