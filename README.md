@@ -1,6 +1,7 @@
 # express-demo
 
 ## Dependencies
+- node
 - npm
 - docker
 - [dbmate](https://github.com/amacneil/dbmate)
@@ -19,7 +20,7 @@ dbmate up
 
 Then, run the project with
 ```bash
-npm app.js
+node app.js
 ```
 
 ### Running Tests
