@@ -1,8 +1,7 @@
 const test = require("ava");
-const mocks = require('node-mocks-http');
+const mocks = require("node-mocks-http");
 const { putUserProvider } = require("./user");
 const dbPool = require("../db/db");
-
 
 test.beforeEach(async (t) => {
   await dbPool.query(`TRUNCATE _user`);
@@ -94,7 +93,7 @@ test("createUserMissingDateOfBirth", async (t) => {
     },
     body: {
       name: "Joe Doe",
-      email: "test@test.com"
+      email: "test@test.com",
     },
   });
   var res = mocks.createResponse();
